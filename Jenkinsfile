@@ -59,6 +59,7 @@ pipeline {
                 }
                 stage('preserve keys') {
                     steps {
+                        sh 'chmod 777 ssh/*'
                         archiveArtifacts artifacts: 'ssh/*', defaultExcludes: false, onlyIfSuccessful: true
                     }
                 }
