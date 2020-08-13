@@ -18,27 +18,27 @@ pipeline {
         TF_NAMESPACE="bryan"
     }
     stages {
+        stage("init") {
+            steps {
+                sh 'make init'
+            }
+        }
+        stage("workspace") {
+            steps {
+                sh """
+                terraform workspace select jenkins-lab-2
+                if [[ \$? -ne 0 ]]; then
+                terraform workspace new jenkins-lab-2
+                fi
+                make init
+                """
+            }
+        }
         stage("create"){
             when {
               environment name: 'Create', value: 'true'
             }
             stages {
-                stage("init") {
-                    steps {
-                        sh 'make init'
-                    }
-                }
-                stage("workspace") {
-                    steps {
-                        sh """
-                        terraform workspace select jenkins-lab-2
-                        if [[ \$? -ne 0 ]]; then
-                        terraform workspace new jenkins-lab-2
-                        fi
-                        make init
-                        """
-                    }
-                }
                 stage("plan") {
                     steps {
                         sh 'make plan'
@@ -63,18 +63,6 @@ pipeline {
               environment name: 'Create', value: 'false'
             }
             stages {
-                stage("workspace") {
-                    steps {
-                        sh """
-                        make init
-                        terraform workspace select jenkins-lab-2
-                        if [[ \$? -ne 0 ]]; then
-                        terraform workspace new jenkins-lab-2
-                        fi
-                        make init
-                        """
-                    }
-                }
                 stage("down") {
                     steps {
                         sh 'make down'
