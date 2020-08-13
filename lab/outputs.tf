@@ -3,9 +3,9 @@ output "bastion" {
 }
 
 output "webserver_public_dns" {
-  value = aws_instance.webserver.public_dns
+  value = aws_instance.webserver.0.public_dns
 }
 
 output "webserver_ip" {
-  value = aws_instance.webserver.public_ip
+  value = aws_instance.webserver.0.public_ip
 }
