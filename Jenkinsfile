@@ -6,7 +6,7 @@ pipeline {
         }
     }
     parameters {
-        booleanParam defaultValue: false, description: 'True if you want to destroy the estate. Defaults to false.', name: 'Destroy'
+        booleanParam defaultValue: true, description: 'True if you want to destroy the estate. Defaults to false.', name: 'Create'
     }
     environment {
         CREDS = credentials('bryan_aws_creds')
@@ -20,7 +20,7 @@ pipeline {
     stages {
         stage("create"){
             when {
-              environment name: 'Destroy', value: 'false'
+              environment name: 'Create', value: 'true'
             }
             stages {
                 stage("init") {
@@ -60,7 +60,7 @@ pipeline {
         }
         stage("destroy") {
             when {
-              environment name: 'Destroy', value: 'true'
+              environment name: 'Create', value: 'false'
             }
             stages {
                 stage("workspace") {
