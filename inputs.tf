@@ -3,6 +3,11 @@ variable "public_key_path" {
   default     = "./ssh/id_rsa.pub"
 }
 
+variable "private_key_path" {
+  description = "path to private key for ssh"
+  default     = "./ssh/id_rsa"
+}
+
 variable "key_name" {
   description = "master key for the lab"
   default     = "lab-key"

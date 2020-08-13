@@ -182,9 +182,9 @@ resource "aws_instance" "webserver" {
       type                = "ssh"
       user                = "ubuntu"
       host                = self.private_ip
-      private_key         = file("./ssh/id_rsa")
+      private_key         = file(var.private_key_path)
       bastion_host        = aws_instance.bastion.public_ip
-      bastion_private_key = file("./ssh/id_rsa")
+      bastion_private_key = file(var.private_key_path)
       bastion_user        = "ubuntu"
     }
   }
