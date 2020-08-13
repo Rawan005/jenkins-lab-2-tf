@@ -54,7 +54,9 @@ pipeline {
                     }
                 }
                 stage('preserve keys') {
-                    archiveArtifacts artifacts: 'ssh/*', defaultExcludes: false, onlyIfSuccessful: true
+                    steps {
+                        archiveArtifacts artifacts: 'ssh/*', defaultExcludes: false, onlyIfSuccessful: true
+                    }
                 }
             }
         }
