@@ -40,6 +40,7 @@ pipeline {
                 anyOf {
                     triggeredBy 'UpstreamCause'
                     triggeredBy 'SCMTrigger'
+                    triggeredBy 'UserIdCause'
                 }
             }
             stages {
