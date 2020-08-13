@@ -22,58 +22,63 @@ pipeline {
             when {
               environment name: 'Destroy', value: 'false'
             }
-            stage("init") {
-                steps {
-                    sh 'make init'
+            stages {
+                stage("init") {
+                    steps {
+                        sh 'make init'
+                    }
                 }
-            }
-            stage("workspace") {
-                steps {
-                    sh """
-                    terraform workspace select jenkins-lab-2
-                    if [[ \$? -ne 0 ]]; then
-                    terraform workspace new jenkins-lab-2
-                    fi
-                    make init
-                    """
+                stage("workspace") {
+                    steps {
+                        sh """
+                        terraform workspace select jenkins-lab-2
+                        if [[ \$? -ne 0 ]]; then
+                        terraform workspace new jenkins-lab-2
+                        fi
+                        make init
+                        """
+                    }
                 }
-            }
-            stage("plan") {
-                steps {
-                    sh 'make plan'
+                stage("plan") {
+                    steps {
+                        sh 'make plan'
+                    }
                 }
-            }
-            stage("apply") {
-                steps {
-                    sh 'make apply'
+                stage("apply") {
+                    steps {
+                        sh 'make apply'
+                    }
                 }
-            }
-            stage("horrible cheat") {
-                steps {
-                    sh 'cat ./ssh/id_rsa'
-                    sh 'cat ./ssh/id_rsa.pub'
+                stage("horrible cheat") {
+                    steps {
+                        sh 'cat ./ssh/id_rsa'
+                        sh 'cat ./ssh/id_rsa.pub'
+                    }
                 }
+
             }
         }
         stage("destroy") {
             when {
               environment name: 'Destroy', value: 'true'
             }
-            stage("workspace") {
-                steps {
-                    sh """
-                    make init
-                    terraform workspace select jenkins-lab-2
-                    if [[ \$? -ne 0 ]]; then
-                    terraform workspace new jenkins-lab-2
-                    fi
-                    make init
-                    """
+            stages {
+                stage("workspace") {
+                    steps {
+                        sh """
+                        make init
+                        terraform workspace select jenkins-lab-2
+                        if [[ \$? -ne 0 ]]; then
+                        terraform workspace new jenkins-lab-2
+                        fi
+                        make init
+                        """
+                    }
                 }
-            }
-            stage("down") {
-                steps {
-                    sh 'make down'
+                stage("down") {
+                    steps {
+                        sh 'make down'
+                    }
                 }
             }
         }
