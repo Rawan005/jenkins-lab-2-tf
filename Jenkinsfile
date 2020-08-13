@@ -5,6 +5,9 @@ pipeline {
         args "-u root --entrypoint=''"
         }
     }
+    triggers {
+        cron "H H(21-22) * * *"
+    }
     environment {
         CREDS = credentials('bryan_aws_creds')
         AWS_ACCESS_KEY_ID = "${CREDS_USR}"
