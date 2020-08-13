@@ -6,7 +6,7 @@ pipeline {
         }
     }
     parameters {
-        booleanParam defaultValue: true, description: 'True if you want to destroy the estate. Defaults to false.', name: 'Create'
+        booleanParam defaultValue: true, description: 'True if you want to build the estate. Defaults to true.', name: 'Create'
     }
     environment {
         CREDS = credentials('bryan_aws_creds')
