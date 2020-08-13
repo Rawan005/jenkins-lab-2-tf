@@ -5,9 +5,6 @@ pipeline {
         args "-u root --entrypoint=''"
         }
     }
-    parameters {
-        booleanParam defaultValue: true, description: 'True if you want to build the estate. Defaults to true.', name: 'Create'
-    }
     environment {
         CREDS = credentials('bryan_aws_creds')
         AWS_ACCESS_KEY_ID = "${CREDS_USR}"
@@ -40,7 +37,10 @@ pipeline {
         }
         stage("create"){
             when {
-              environment name: 'Create', value: 'true'
+                anyOf {
+                    triggeredBy 'UpstreamCause'
+                    triggeredBy 'SCMTrigger'
+                }
             }
             stages {
                 stage("plan") {
@@ -59,12 +59,11 @@ pipeline {
                         sh 'cat ./ssh/id_rsa.pub'
                     }
                 }
-
             }
         }
         stage("destroy") {
             when {
-              environment name: 'Create', value: 'false'
+                triggeredBy 'TimerTrigger'
             }
             stages {
                 stage("down") {
